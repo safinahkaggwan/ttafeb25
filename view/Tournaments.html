@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>TTA - Tournaments</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="./assets/img/fav.png" rel="icon">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="./assets/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link href="./assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="./assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="./assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="./assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="./assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="./assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="./assets/css/style.css" rel="stylesheet">
+
+</head>
+<body>
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="./assets/img/ttalogo.png" alt="">
+        <span class="d-none d-lg-block"></span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+
+        </li><!-- End Search Icon-->
+
+        <!-- <li class="nav-item">
+
+            <div class="search-bar">
+            <form class="search-form d-flex align-items-center" method="POST" action="#">
+                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+            </form>
+            </div>
+        </li> -->
+
+        <nav class="header-nav ms-auto">
+          <ul class="d-flex align-items-center">
+    
+            <li class="nav-item d-block d-lg-none">
+              <a class="nav-link nav-icon search-bar-toggle " href="#">
+                <i class="bi bi-search"></i>
+              </a>
+            </li><!-- End Search Icon-->
+    
+            <li class="nav-item dropdown pe-3">
+    
+              <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                <!-- <img src="./assets/img/profile-img.jpg" alt="Profile" class="rounded-circle"> -->
+                 <div class="rounded-circle"><i style="font-size: 19px;" class="bi bi-person"></i></div>
+                <!-- <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span> -->
+              </a><!-- End Profile Iamge Icon -->
+    
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                <li class="dropdown-header">
+                  <h6>Username</h6>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+    
+                <li>
+                  <a class="dropdown-item d-flex align-items-center" href="users.html">
+                    <i class="bi bi-person"></i>
+                    <span>User Management</span>
+                  </a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li>
+                  <a class="dropdown-item d-flex align-items-center" href="group.html">
+                    <i class="bi bi-people"></i>
+                    <span>Group Management</span>
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+<!--     
+                <li>
+                  <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                    <i class="bi bi-gear"></i>
+                    <span>Account Settings</span>
+                  </a>
+                </li> -->
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+    
+                <li>
+                  <a class="dropdown-item d-flex align-items-center"  onclick="logout()" href="login.html">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Sign Out</span>
+                  </a>
+                </li>
+    
+              </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+    
+          </ul>
+        </nav><!-- End Icons Navigation -->
+    </ul>
+
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+ <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="home.html">
+          <i class="bi bi-grid"></i>
+          <span>Home</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="Tournaments.html">
+          <i class="bi bi-award"></i>
+          <span>Tournaments</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+    <!--  <li class="nav-item">
+        <a class="nav-link collapsed" href="ladders.html">
+          <i class="bi bi-question-circle"></i>
+          <span>Ladders</span>
+        </a>
+      </li>-->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="clubs.html">
+          <i class="bi bi-envelope"></i>
+          <span>Clubs</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="players.html">
+          <i class="bi bi-card-list"></i>
+          <span>Players</span>
+        </a>
+      </li><!-- End Register Page Nav -->
+
+     <!-- <li class="nav-item">
+        <a class="nav-link collapsed" href="Rankings.html">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Rankings</span>
+        </a>
+      </li>-->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+      <main id="main" class="main">
+
+            <div class="pagetitle">
+              <h1>Tournaments</h1>
+              <nav>
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                  <!--<li class="breadcrumb-item">Rankings</li>-->
+                  <li class="breadcrumb-item active">Tournaments</li>
+                </ol>
+              </nav>
+            </div><!-- End Page Title -->
+        
+          <section class="section">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Tournament Management</h5>
+
+                      <div class="row">
+                        <div class="col-md">
+                          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tModal">
+                            Create New Tournament
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="modal fade" id="tModal" tabindex="-1">
+                        <div class="modal-dialog modal-md">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="card-title">Create New Tournament</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="card-body">
+                                  <form id="createtournamentform">
+                                    <div class="row mb-3">
+                                        <label for="tname" class="col-sm-3 col-form-label">Tournament Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="tname" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="tlocation" class="col-sm-3 col-form-label">Tournament Location</label>
+                                        <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="tlocation" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="tdate" class="col-sm-3 col-form-label">Tournament Date</label>
+                                        <div class="col-sm-9">
+                                            <input type="date" class="form-control" id="tdate">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-sm">
+                                            <button type="submit" class="btn btn-primary">Add Tournament</button>
+                                        </div>
+                                    </div>
+
+                                </form><!-- End General Form Elements -->
+
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div><!-- End Large Modal-->
+            <table class="table" id="tournamentsTable">
+                    <thead>
+                        <tr>
+                        <th>No.</th>
+                            <th>Tournament Name</th>
+                            <th>Location</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tournamentsList"></tbody>
+                </table>
+                    </div>
+                  </div>
+                    </div>
+                    </div>
+                  </div>
+<!-- Update Tournament Modal -->
+<div class="modal fade" id="tuModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Tournament</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateTournamentForm">
+                    <input type="hidden" id="tournamentId"> <!-- Hidden field to store tournament ID -->
+                    <div class="mb-3">
+                        <label for="tournamentName" class="form-label">Tournament Name</label>
+                        <input type="text" class="form-control" id="tournamentName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tournamentLocation" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="tournamentLocation" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tournamentDate" class="form-label">Date</label>
+                        <input type="date" class="form-control" id="tournamentDate" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Tournament</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+                </div>
+              </div>
+            </section>
+  
+    </main>
+    <script>
+        // Handle create tournaments form submission
+        $('#createtournamentform').submit(function(event) {
+            event.preventDefault();
+            const tname = $('#tname').val();
+            const tlocation = $('#tlocation').val();
+            const tdate = $('#tdate').val();
+
+            $.ajax({
+                url: 'http://localhost:5500/tournaments',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ tname, tlocation, tdate}),
+                success: function(response) {
+                    alert('tournament created successful');
+                    // Clear form fields
+                    $('#tname').val('');
+                    $('#tlocation').val('');
+                    $('#tdate').val('');
+                    fetchtournaments();
+                },
+                error: function(err) {
+                    alert('tournament creation failed: ' + err.responseJSON.message);
+                }
+            });
+        });
+
+     // Fetch all tournaments and display them in the table
+function fetchtournaments() {
+    $.ajax({
+        url: 'http://localhost:5500/tournaments',
+        method: 'GET',
+        success: function(response) {
+            console.log(response); // Inspect the response structure in the browser console
+            let tournaments = response.tournaments || response;  // Adjust this based on the actual response structure
+
+            if (!Array.isArray(tournaments) || tournaments.length === 0) {
+                alert("No tournaments found");
+                return;
+            }
+
+            let tournamentsList = $('#tournamentsList');
+            tournamentsList.empty(); // Clear existing entries
+
+            // Iterate over the tournaments and append them to the table
+            tournaments.forEach(function(tournament) {
+                tournamentsList.append(`
+                    <tr id="">
+                        <td>${tournament.tid}</td>
+                        <td>${tournament.tname}</td>
+                        <td>${tournament.tlocation}</td>
+                        <td>${tournament.tdate}</td>
+                        <td>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tuModal" onclick="updatetournament('${tournament.tid}')">Update</button>
+                            <button class="btn btn-primary" onclick="deletetournament('${tournament.tid}')">Delete</button>
+                        </td>
+                    </tr>
+                `);
+            });
+        },
+        error: function(err) {
+            // console.error('Error fetching tournaments:', err);
+            // alert('Error fetching tournaments: ' + (err.responseJSON?.message || err.statusText));
+        }
+    });
+}
+
+// Update a tournament
+function updatetournament(tournamentId) {
+    // Fetch tournament details by ID
+    $.ajax({
+        url: 'http://localhost:5500/tournaments/' + tournamentId,// Fetch specific tournament by ID
+        method: 'GET',
+        success: function(response) {
+            const tournament = response.tournament || response; // Adjust based on API structure
+            
+            // Populate the modal fields with fetched data
+            $('#tournamentId').val(tournament.tid);
+            $('#tournamentName').val(tournament.tname);
+            $('#tournamentLocation').val(tournament.tlocation);
+            $('#tournamentDate').val(tournament.tdate);
+        },
+        error: function(err) {
+            // console.error('Error fetching tournament:', err);
+            // alert('Error fetching tournament: ' + (err.responseJSON?.message || err.statusText));
+        }
+    });
+}
+
+// Handle the form submission to update the tournament
+$('#updateTournamentForm').submit(function(event) {
+    event.preventDefault(); // Prevent form submission from refreshing the page
+
+    const updatedTournament = {
+        tid: $('#tournamentId').val(),
+        tname: $('#tournamentName').val(),
+        tlocation: $('#tournamentLocation').val(),
+        tdate: $('#tournamentDate').val()
+    };
+
+    $.ajax({
+        url: 'http://localhost:5500/tournaments/' + tournamentId, // Update URL endpoint
+        method: 'PUT', // Use PUT method for updates
+        contentType: 'application/json',
+        data: JSON.stringify(updatedTournament), // Send updated tournament data as JSON
+        success: function(response) {
+            $('#tuModal').modal('hide'); // Hide the modal after updating
+            fetchtournaments(); // Refresh the tournament list
+            alert('Tournament updated successfully!');
+        },
+        error: function(err) {
+            console.error('Error updating tournament:', err);
+            alert('Error updating tournament: ' + (err.responseJSON?.message || err.statusText));
+        }
+    });
+});
+
+// Fetch tournaments on page load
+$(document).ready(function() {
+    fetchtournaments(); // Fetch tournaments when the page loads
+});
+
+        // Delete a tournament
+        function deletetournament(tournamentId) {
+            if (!confirm('Are you sure you want to delete this tournament?')) {
+                return;
+            }
+
+            $.ajax({
+                url: 'http://localhost:5500/tournaments/' + tournamentId,
+                method: 'DELETE',
+                success: function(response) {
+                    alert('tournament deleted successfully');
+                    $('#tournament-' + tournamentId).remove();
+                },
+                error: function(err) {
+                    alert('Error deleting tournament: ' + err.responseJSON.message);
+                }
+            });
+        }
+
+        // Logout function to clear the token and redirect to login page
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+
+        // Fetch tournaments on page load
+        $(document).ready(function() {
+            fetchtournaments();
+        });
+    </script>
+
+      <!-- Vendor JS Files -->
+  <script src="./assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="./assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="./assets/vendor/chart.js/chart.umd.js"></script>
+  <script src="./assets/vendor/echarts/echarts.min.js"></script>
+  <script src="./assets/vendor/quill/quill.min.js"></script>
+  <script src="./assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="./assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="./assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="./assets/js/main.js"></script>
+</body>
+</html>

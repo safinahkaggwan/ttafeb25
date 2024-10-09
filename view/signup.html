@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>TTA-Users</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="./assets/img/fav.png" rel="icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="./assets/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link href="./assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="./assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="./assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="./assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="./assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="./assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="./assets/css/style.css" rel="stylesheet">
+
+  <!-- Vendor JS Files -->
+  <script src="./assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="./assets/vendor/simple-datatables/simple-datatables.js"></script>
+
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="./assets/img/ttalogo.png" alt="">
+        <span class="d-none d-lg-block"></span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+
+        </li><!-- End Search Icon-->
+
+        <!-- <li class="nav-item">
+
+            <div class="search-bar">
+            <form class="search-form d-flex align-items-center" method="POST" action="#">
+                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+            </form>
+            </div>
+        </li> -->
+
+        <nav class="header-nav ms-auto">
+          <ul class="d-flex align-items-center">
+    
+            <li class="nav-item d-block d-lg-none">
+              <a class="nav-link nav-icon search-bar-toggle " href="#">
+                <i class="bi bi-search"></i>
+              </a>
+            </li><!-- End Search Icon-->
+    
+            <li class="nav-item dropdown pe-3">
+    
+              <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                <!-- <img src="./assets/img/profile-img.jpg" alt="Profile" class="rounded-circle"> -->
+                 <div class="rounded-circle"><i style="font-size: 19px;" class="bi bi-person"></i></div>
+                <!-- <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span> -->
+              </a><!-- End Profile Iamge Icon -->
+    
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                <li class="dropdown-header">
+                  <h6>Username</h6>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+    
+                <li>
+                  <a class="dropdown-item d-flex align-items-center" href="users.html">
+                    <i class="bi bi-person"></i>
+                    <span>User Management</span>
+                  </a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li>
+                  <a class="dropdown-item d-flex align-items-center" href="group.html">
+                    <i class="bi bi-people"></i>
+                    <span>Group Management</span>
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+<!--     
+                <li>
+                  <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                    <i class="bi bi-gear"></i>
+                    <span>Account Settings</span>
+                  </a>
+                </li> -->
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+    
+                <li>
+                  <a class="dropdown-item d-flex align-items-center"  onclick="logout()" href="login.html">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Sign Out</span>
+                  </a>
+                </li>
+    
+              </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+    
+          </ul>
+        </nav><!-- End Icons Navigation -->
+    </ul>
+
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="home.html">
+          <i class="bi bi-grid"></i>
+          <span>Home</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="Tournaments.html">
+          <i class="bi bi-award"></i>
+          <span>Tournaments</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+    <!--  <li class="nav-item">
+        <a class="nav-link collapsed" href="ladders.html">
+          <i class="bi bi-question-circle"></i>
+          <span>Ladders</span>
+        </a>
+      </li>-->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="clubs.html">
+          <i class="bi bi-envelope"></i>
+          <span>Clubs</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="players.html">
+          <i class="bi bi-card-list"></i>
+          <span>Players</span>
+        </a>
+      </li><!-- End Register Page Nav -->
+
+     <!-- <li class="nav-item">
+        <a class="nav-link collapsed" href="Rankings.html">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Rankings</span>
+        </a>
+      </li>-->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+    <div class="pagetitle">
+      <h1>Users</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Settings</a></li>
+          <li class="breadcrumb-item active">Users</li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="row">
+      <div class="col-md-5">
+        <div class="card mb-3 container">
+          <div class="card-body">
+            <h5 class="card-title text-center pb-0 fs-4">Register New User</h5>
+            <p class="text-center small">Enter new user details to create account</p>
+          </div>
+          <form class="row g-3 needs-validation" id="signupForm" novalidate>
+            <div class="col-12">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" name="email" class="form-control" id="username" required>
+            </div>
+            <div class="col-12">
+              <label for="useremail" class="form-label">User Email</label>
+              <input type="email" name="email" class="form-control" id="email" required>
+              <div class="invalid-feedback">Please enter a valid Email address!</div>
+            </div>
+            <div class="col-12">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" name="password" class="form-control" id="password" required>
+              <div class="invalid-feedback">Please enter your password!</div>
+            </div>
+            <div class="col-12 mb-3">
+              <button id="userbtn" class="btn btn-success w-100" type="submit">Register User</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-7">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-label text-center pb-0 fs-4">System Users</div>
+            <table id="usersTable" class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Username</th>
+                  <th scope="col">Email</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersList"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>Tanzania Tennis Association</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      Designed by <a href="#">KS Sofwares</a>
+    </div>
+  </footer>
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+ <div class="modal fade" id="uuModal" tabindex="-1">
+                <div class="modal-dialog modal-md">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="card-title">Update User</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="card-body">
+                        <!-- Club Form -->
+                       <form id="addClubForm" enctype="multipart/form-data">
+                            <div class="row mb-3">
+                                <label for="uname" class="col-sm-3 col-form-label">User Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="cname" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="uemail" class="col-sm-3 col-form-label">User Email</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="ccontact" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="pwd" class="col-sm-3 col-form-label">Password</label>
+                                <div class="col-sm-9">
+                                    <input type="email" class="form-control" id="cemail">
+                                </div>
+                                </div>
+                            <div class="row mb-3">
+                                <div class="col-sm">
+                                    <button type="submit" onclick="updateUser('${user.id}')" class="btn btn-primary">Update User</button>
+                                </div>
+                            </div>
+
+                        </form><!-- End General Form Elements -->
+
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- End Large Modal-->
+
+ 
+    <script>
+        // Validate password length
+        function validatePassword(password) {
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters long.');
+                return false;
+            }
+            return true;
+        }
+
+        // Handle sign-up form submission
+        $('#signupForm').submit(function(event) {
+            event.preventDefault();
+            const username = $('#username').val();
+            const email = $('#email').val();
+            const password = $('#password').val();
+
+            // Validate password strength
+            if (!validatePassword(password)) {
+                return;
+            }
+
+            $.ajax({
+                url: 'http://localhost:5500/users/signup',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ username, email, password }),  // Include username
+                success: function(response) {
+                    alert('Sign-up successful');
+                    // Clear form fields
+                    $('#username').val('');
+                    $('#email').val('');
+                    $('#password').val('');
+                    // Refresh user list after successful sign-up
+                    fetchUsers();
+                },
+                error: function(err) {
+                    alert('Sign-up failed: ' + err.responseJSON.message);
+                }
+            });
+        });
+
+       // Fetch all users and display them in the table
+function fetchUsers() {
+    $.ajax({
+        url: 'http://localhost:5500/users',
+        method: 'GET',
+        success: function(response) {
+            console.log(response); // Inspect the response structure in the browser console
+            let users = response.users || response;  // Adjust this based on the actual response structure
+
+            if (!Array.isArray(users) || users.length === 0) {
+                alert("No users found");
+                return;
+            }
+
+            let usersList = $('#usersList');
+            usersList.empty(); // Clear existing entries
+
+            // Iterate over the users and append them to the table
+            users.forEach(function(user) {
+                usersList.append(`
+                    <tr id="user-${user.id}">
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>
+                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#uuModal" onclick="updateUser('${user.id}')">Update</button>
+                            <!--<button class="btn btn-success" onclick="updateUser('${user.id}')">Update</button>-->
+                            <button class="btn btn-success" onclick="deleteUser('${user.id}')">Delete</button>
+                        </td>
+                    </tr>
+                `);
+            });
+        },
+        error: function(err) {
+            console.error('Error fetching users:', err);
+            alert('Error fetching users: ' + (err.responseJSON?.message || err.statusText));
+        }
+    });
+}
+
+        // Update a user
+        function updateUser(userId) {
+            if (!confirm('Are you sure you want to update this user?')) {
+                return;
+            }
+
+            $.ajax({
+                url: 'http://localhost:5500/user/' + userId,
+                method: 'UPDATE',
+                success: function(response) {
+                    alert('User updated successfully');
+                    // Remove user from the table
+                    $('#user-' + userId).remove();
+                },
+                error: function(err) {
+                    alert('Error updating user: ' + err.responseJSON.message);
+                }
+            });
+        }
+
+        // Delete a user
+        function deleteUser(userId) {
+            if (!confirm('Are you sure you want to delete this user?')) {
+                return;
+            }
+
+            $.ajax({
+                url: 'http://localhost:5500/user/' + userId,
+                method: 'DELETE',
+                success: function(response) {
+                    alert('User deleted successfully');
+                    // Remove user from the table
+                    $('#user-' + userId).remove();
+                },
+                error: function(err) {
+                    alert('Error deleting user: ' + err.responseJSON.message);
+                }
+            });
+        }
+
+        // Logout function to clear the token and redirect to login page
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+
+        // Fetch users on page load
+        $(document).ready(function() {
+            fetchUsers();
+        });
+    </script>
+  <!-- Additional Vendor JS Files -->
+  <script src="./assets/vendor/quill/quill.min.js"></script>
+  <script src="./assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="./assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="./assets/js/main.js"></script>
+
+</body>
+</html>

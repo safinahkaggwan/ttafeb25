@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clubs</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h2>Clubs</h2>
+    <nav>
+        <a href="product.html">Products</a>
+        <a href="orders.html">Orders</a>
+        <a href="signup.html">Users</a>
+        <a href="clubs.html">Clubs</a>
+        <a href="group.html">Groups</a>
+        <a href="logout.html" onclick="logout()">Logout</a>
+    </nav>
+
+    <table id="testTable" border="1">
+        <thead>
+            <tr>
+                <th>Club Name</th>
+                <th>Contact</th>
+                <th>Email</th>
+                <th>Onboard Date</th>
+                <th>Slogan</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Clubs will be inserted here -->
+        </tbody>
+    </table>
+
+    <h3>Add New Club</h3>
+    <form id="addtestForm" enctype="multipart/form-data">
+        <label>Club Name: <input type="text" id="cname" required></label><br>
+        <label>Contact: <input type="number" id="ccontact" required></label><br>
+        <label>Email: <input type="email" id="cemail" required></label><br>
+        <label>Onboard Date: <input type="date" id="onboarddate" required></label><br>
+        <label>Slogan: <input type="text" id="slogan" required></label><br>
+        <button type="submit">Add Club</button>
+    </form>
+
+    <script>
+        // Fetch all clubs
+        function fetchtests() {
+            $.ajax({
+                url: 'http://localhost:5500/test',
+                method: 'GET',
+                success: function(response) {
+                    let tests = response.tests; // Updated to match the response structure
+                    let testTableBody = $('#testTable tbody');
+                    testTableBody.empty();
+                    tests.forEach(test => {
+                        testTableBody.append(`
+                            <tr id="test-${test.id}">
+                                <td>${test.cname}</td>
+                                <td>${test.ccontact}</td>
+                                <td>${test.cemail}</td>
+                                <td>${test.onboarddate}</td>
+                                <td>${test.slogan}</td>
+                                <td>
+                                    <button onclick="deletetest('${test.id}')">Delete</button>
+                                    <button onclick="updatetest('${test.id}')">Update</button>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                },
+                error: function(err) {
+                    alert('Error fetching clubs: ' + err.responseJSON.message);
+                }
+            });
+        }
+
+        // Add a new test
+        $('#addtestForm').submit(function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            formData.append('cname', $('#cname').val());  // Change 'name' to 'cname'
+            formData.append('ccontact', $('#ccontact').val());
+            formData.append('cemail', $('#cemail').val());
+            formData.append('onboarddate', $('#onboarddate').val());
+            formData.append('slogan', $('#slogan').val());
+
+            $.ajax({
+                url: 'http://localhost:5500/test',
+                method: 'POST',
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function(response) {
+                    alert('Club added successfully');
+                    fetchtests();
+                },
+                error: function(err) {
+                    alert('Error adding club: ' + err.responseJSON.message);
+                }
+            });
+        });
+
+        // Delete a test
+        function deletetest(testId) {
+            $.ajax({
+                url: 'http://localhost:5500/test/' + testId,
+                method: 'DELETE',
+                success: function(response) {
+                    alert('Club deleted');
+                    $('#test-' + testId).remove();
+                },
+                error: function(err) {
+                    alert('Error deleting club: ' + err.responseJSON.message);
+                }
+            });
+        }
+
+        // Update a test
+        function updatetest(testId) {
+            const newName = prompt('Enter new club name:');
+            const newContact = prompt('Enter new club contact:');
+            const newEmail = prompt('Enter new club email:');
+            const newDate = prompt('Enter new onboard date:');
+            const newSlogan = prompt('Enter new club slogan:');
+
+            const updateData = {
+                cname: newName,
+                ccontact: newContact,
+                cemail: newEmail,
+                onboarddate: newDate,
+                slogan: newSlogan
+            };
+
+            $.ajax({
+                url: 'http://localhost:5500/test/' + testId,
+                method: 'PATCH',
+                contentType: 'application/json',
+                data: JSON.stringify(updateData),
+                success: function(response) {
+                    alert('Club updated');
+                    fetchtests();
+                },
+                error: function(err) {
+                    alert('Error updating club: ' + err.responseJSON.message);
+                }
+            });
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+
+        // On document ready, fetch tests
+        $(document).ready(function() {
+            fetchtests();
+        });
+    </script>
+</body>
+</html>

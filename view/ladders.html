@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>TTA-Ladder</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="./assets/img/fav.png" rel="icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="./assets/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+  <link href="./assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="./assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="./assets/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="./assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="./assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="./assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="./assets/css/style.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+
+ 
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="./assets/img/ttalogo.png" alt="">
+        <span class="d-none d-lg-block"></span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+
+        </li><!-- End Search Icon-->
+
+        <!-- <li class="nav-item">
+
+            <div class="search-bar">
+            <form class="search-form d-flex align-items-center" method="POST" action="#">
+                <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+                <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+            </form>
+            </div>
+        </li> -->
+
+        <nav class="header-nav ms-auto">
+          <ul class="d-flex align-items-center">
+    
+            <li class="nav-item d-block d-lg-none">
+              <a class="nav-link nav-icon search-bar-toggle " href="#">
+                <i class="bi bi-search"></i>
+              </a>
+            </li><!-- End Search Icon-->
+    
+            <li class="nav-item dropdown pe-3">
+    
+              <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                <!-- <img src="./assets/img/profile-img.jpg" alt="Profile" class="rounded-circle"> -->
+                 <div class="rounded-circle"><i style="font-size: 19px;" class="bi bi-person"></i></div>
+                <!-- <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span> -->
+              </a><!-- End Profile Iamge Icon -->
+    
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                <li class="dropdown-header">
+                  <h6>Username</h6>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+    
+                <li>
+                  <a class="dropdown-item d-flex align-items-center" href="users.html">
+                    <i class="bi bi-person"></i>
+                    <span>User Management</span>
+                  </a>
+                </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+                <li>
+                  <a class="dropdown-item d-flex align-items-center" href="group.html">
+                    <i class="bi bi-people"></i>
+                    <span>Group Management</span>
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+<!--     
+                <li>
+                  <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                    <i class="bi bi-gear"></i>
+                    <span>Account Settings</span>
+                  </a>
+                </li> -->
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
+    
+                <li>
+                  <a class="dropdown-item d-flex align-items-center"  onclick="logout()" href="login.html">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span>Sign Out</span>
+                  </a>
+                </li>
+    
+              </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+    
+          </ul>
+        </nav><!-- End Icons Navigation -->
+    </ul>
+
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="home.html">
+          <i class="bi bi-grid"></i>
+          <span>Home</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="Tournaments.html">
+          <i class="bi bi-award"></i>
+          <span>Tournaments</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+    <!--  <li class="nav-item">
+        <a class="nav-link collapsed" href="ladders.html">
+          <i class="bi bi-question-circle"></i>
+          <span>Ladders</span>
+        </a>
+      </li>-->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="clubs.html">
+          <i class="bi bi-envelope"></i>
+          <span>Clubs</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="players.html">
+          <i class="bi bi-card-list"></i>
+          <span>Players</span>
+        </a>
+      </li><!-- End Register Page Nav -->
+
+     <!-- <li class="nav-item">
+        <a class="nav-link collapsed" href="Rankings.html">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Rankings</span>
+        </a>
+      </li>-->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Ladders</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <!--<li class="breadcrumb-item">Rankings</li>-->
+          <li class="breadcrumb-item active">Ladders</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Ladders Management</h5>
+
+              <div class="row">
+                <div class="col-md">
+                  <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#gmModal">
+                    Create New Ladder
+                  </button>
+                </div>
+              </div>
+              <div class="modal fade" id="gmModal" tabindex="-1">
+                <div class="modal-dialog modal-md">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="card-title">Create New Ladder</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="card-body">
+                        <!-- Ladder Form -->
+
+                        <form id="gameForm">
+                            <div class="row mb-3">
+                                <label for="lid" class="col-sm-3 col-form-label">Ladder</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" id="lid" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="gid" class="col-sm-3 col-form-label">Group</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" id="gid" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="poid" class="col-sm-3 col-form-label">Player One </label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" id="poid" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="ptid" class="col-sm-3 col-form-label">Player Two </label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" id="ptid" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="tid" class="col-sm-3 col-form-label">Tournament </label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" id="tid" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm">
+                                    <button type="submit" class="btn btn-primary">Add New Game</button>
+                                </div>
+                            </div>
+                        </form>
+                       
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div><!-- End Large Modal-->
+            <table class="table datatable">
+                <thead>
+                    <tr>
+                        <th>Ladder</th>
+                        <th>Group</th>
+                        <th>Player One</th>
+                        <th>Player Two</th>
+                        <th>Tournament</th>
+                        <th>Player One Score</th>
+                        <th>Player Two Score</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="gameList">
+                </tbody>
+            </table>
+
+    </main>
+    
+    <script>
+        $(document).ready(function() {
+            // Function to fetch and display all games
+            function fetchGames() {
+                $.ajax({
+                    url: '/games',
+                    type: 'GET',
+                    success: function(result) {
+                        $('#gameList').empty();
+                        result.forEach(function(game) {
+                            $('#gameList').append(`
+                                <tr>
+                                    <td>${game.lid}</td>
+                                    <td>${game.gid}</td>
+                                    <td>${game.poid}</td>
+                                    <td>${game.ptid}</td>
+                                    <td>${game.tid}</td>
+                                    <td>${game.po_score}</td>
+                                    <td>${game.pt_score}</td>
+                                    <td>
+                                        <button class="btn btn-danger delete-btn" data-id="${game.lid}">Delete</button>
+                                    </td>
+                                </tr>
+                            `);
+                        });
+                    },
+                    error: function(err) {
+                        //alert('Error fetching games');
+                    }
+                });
+            }
+
+            // Fetch and display games on page load
+            fetchGames();
+
+            // Add Game
+            $('#gameForm').submit(function(event) {
+                event.preventDefault();
+                const formData = {
+                    lid: $('#lid').val(),
+                    gid: $('#gid').val(),
+                    poid: $('#poid').val(),
+                    ptid: $('#ptid').val(),
+                    tid: $('#tid').val(),
+                    po_score: $('#po_score').val(),
+                    pt_score: $('#pt_score').val()
+                };
+
+                $.ajax({
+                    url: 'http://localhost:5501/games',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function(response) {
+                        alert(response);
+                        fetchGames();
+                    },
+                    error: function(err) {
+                       // alert('Error adding game');
+                    }
+                });
+            });
+
+            // Delete Game
+            $(document).on('click', '.delete-btn', function() {
+                const lid = $(this).data('id');
+                if (confirm('Are you sure you want to delete this game?')) {
+                    $.ajax({
+                        url: `http://localhost:5501/games/${lid}`,
+                        method: 'DELETE',
+                        success: function(response) {
+                            alert(response);
+                            fetchGames();
+                        },
+                        error: function(err) {
+                           // alert('Error deleting game');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+          <!-- Vendor JS Files -->
+  <script src="./assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="./assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="./assets/vendor/chart.js/chart.umd.js"></script>
+  <script src="./assets/vendor/echarts/echarts.min.js"></script>
+  <script src="./assets/vendor/quill/quill.min.js"></script>
+  <script src="./assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="./assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="./assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="./assets/js/main.js"></script>
+</body>
+</html>
