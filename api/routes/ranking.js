@@ -1,20 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const rankingController = require('../controllers/rankings');
+const RankingsController = require('../controllers/rankings');
 
-// Fetch all rankings and render them in a view
-router.get('/', rankingController.rankings_get_all);
+// Get player rankings
+router.get('/players', RankingsController.getPlayerRankings);
 
-// Create a new ranking (form view and POST action)
-router.get('/create', (req, res) => {
-    res.render('rankings/create'); 
-});
-router.post('/', rankingController.create_ranking);
+// Get club rankings
+router.get('/clubs', RankingsController.getClubRankings);
 
-router.get('/:rankingId', rankingController.getarank);
-
-router.patch('/:rankingId', rankingController.updaterankings);
-
-router.delete('/:rankingId', rankingController.deleteranking);
+// Get tournament statistics
+router.get('/tournaments', RankingsController.getTournamentStats);
 
 module.exports = router;

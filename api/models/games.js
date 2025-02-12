@@ -1,65 +1,58 @@
-// const { DataTypes } = require('sequelize');
-// const sequelize = require('../db');
-// const Group = require('./groups');
-// const Player = require('./player');
-// const Tournament = require('./tournaments');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../db');
+const Grp = require('./groups');
+const Player = require('./player');
+const Tournament = require('./tournaments');
+const GamePlayer = require('./gamePlayer');
 
-// const Game = sequelize.define('Game', {
-//   lid: {
-//     type: DataTypes.INTEGER,
-//     primaryKey: true,
-//     autoIncrement: true
-//   },
-//   lname: {
-//     type: DataTypes.STRING(35),
-//     allowNull: false,
-//   },
-//   // Foreign key for Player One
-//   poid: {
-//     type: DataTypes.INTEGER,
-//     references: {
-//       model: Player,
-//       key: 'pid'
-//     },
-//     allowNull: false,
-//   },
-//   // Foreign key for Player Two
-//   ptid: {
-//     type: DataTypes.INTEGER,
-//     references: {
-//       model: Player,
-//       key: 'pid'
-//     },
-//     allowNull: false,
-//   },
-//   po_score: {
-//     type: DataTypes.INTEGER
-//   },
-//   pt_score: {
-//     type: DataTypes.INTEGER
-//   },
+// Define the Game model
+const Game = sequelize.define(
+  'Game',
+  {
+    gmid: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+      allowNull: false,
+    },
+    gtype: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isIn: [['singles', 'doubles']], // Validate value
+      },
+    },
+    gmname: {
+      type: DataTypes.STRING(35),
+      allowNull: false,
+    }
+  },
+  {
+    timestamps: false,
+    tableName: 'games',
+  }
+);
 
-// }, {
-//   timestamps: false,
-//   tableName: 'game'
-// });
+Game.belongsToMany(Player, {
+  through: GamePlayer,
+  foreignKey: 'gmid',
+  otherKey: 'pid'
+});
 
-// // Associations
-// // Two associations for players: Player One and Player Two
-// Game.belongsTo(Player, { as: 'PlayerOne', foreignKey: 'poid', onDelete: 'CASCADE' });
-// Game.belongsTo(Player, { as: 'PlayerTwo', foreignKey: 'ptid', onDelete: 'CASCADE' });
+Player.belongsToMany(Game, {
+  through: GamePlayer,
+  foreignKey: 'pid',
+  otherKey: 'gmid'
+});
 
-// // Group and Tournament associations
-// Game.belongsTo(Group, { foreignKey: 'gid', onDelete: 'CASCADE' });
-// Game.belongsTo(Tournament, { foreignKey: 'tid', onDelete: 'CASCADE' });
+// Associations
+Game.belongsTo(Tournament, { foreignKey: 'tid', onDelete: 'CASCADE' });
+Game.belongsTo(Grp, { foreignKey: 'gid', onDelete: 'NO ACTION' });
 
-// // Sync the model
-// Game.sync({ alter: true })
-// .then(() => {
-//     console.log('Game table has been created or updated.');
-// })
-// .catch(err => {
-//     console.error('Error creating/updating Game table:', err);
-// });
+// Sync the model
+Game.sync({ alter: true })
+.then(() => {
+    console.log('Game table has been created or updated.');
+});
 
-// module.exports = Game;
+module.exports = Game;

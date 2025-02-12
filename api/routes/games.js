@@ -3,18 +3,23 @@ const router = express.Router();
 const gameController = require('../controllers/games');
 
 // Fetch all games and render them in a view
-router.get('/', gameController.games_get_all);
+router.get('/', gameController.getAllGames);
 
-// Create a new game (form view and POST action)
-router.get('/create', (req, res) => {
-    res.render('games/create');
-});
-router.post('/', gameController.create_game);
+// Create a new game (POST action)
+router.post('/', gameController.createGame);
 
-router.get('/:gameId', gameController.getagame);
+router.post('/:gmid/players', gameController.addPlayersToGame);
 
-router.patch('/:gameId', gameController.updategame);
+// Get a specific game by ID, including players and scores
+router.get('/:gameId', gameController.getGame);
 
-router.delete('/:gameId', gameController.deletegame);
+// Get game configuration (e.g., players, teams) for a specific game
+router.get('/:gameId/config', gameController.getGameConfig);
+
+// Update scores and winner for a game
+router.patch('/:gameId/scores', gameController.updateScores);
+
+// Delete a game by ID
+router.delete('/:gameId', gameController.deleteGame);
 
 module.exports = router;

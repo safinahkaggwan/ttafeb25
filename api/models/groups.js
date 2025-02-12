@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 
-const Group = sequelize.define('Group', {
+const Grp = sequelize.define('Grp', {
     gid: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -18,10 +18,10 @@ const Group = sequelize.define('Group', {
     }
   }, {
     timestamps: true,  // Automatically adds createdAt and updatedAt fields
-    tableName: 'group'  // Specify the table name explicitly if necessary
+    tableName: 'grps'  // Specify the table name explicitly if necessary
   });
   
-  Group.sync({ alter: true })
+  Grp.sync({ alter: true })
       .then(() => {
           console.log('Group table has been created or updated.');
       })
@@ -29,4 +29,4 @@ const Group = sequelize.define('Group', {
           console.error('Error creating/updating Group table:', err);
       });
   
-  module.exports = Group;
+  module.exports = Grp;

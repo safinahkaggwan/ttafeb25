@@ -4,13 +4,15 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
+const sequelize = require('./api/db'); 
 
 // Enable CORS for cross-origin resource sharing
 app.use(cors());
 
 // Middleware setup
 app.use(morgan('dev'));  // Logging requests for development purposes
-app.use('/uploads', express.static('uploads'));  // Serve static files like uploaded images
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// app.use('/uploads', express.static('uploads'));  // Serve static files like uploaded images
 app.use(bodyParser.urlencoded({ extended: false }));  // Parse URL-encoded data
 app.use(bodyParser.json());  // Parse JSON data
 
@@ -49,19 +51,30 @@ const userRoutes = require('./api/routes/user');
 const groupRoutes = require('./api/routes/groups');
 const playerRoutes = require('./api/routes/players');
 const tournamentRoutes = require('./api/routes/tournament');
-// const gameRoutes = require('./api/routes/games');
-// const rankingRoutes = require('./api/routes/ranking');
-//const statRoutes = require('./api/routes/playerstats');
+const programRoutes = require('./api/routes/programs');
+const roleRoutes = require('./api/routes/role');
+const checkAccess = require('./api/middleware/checkaccess');
+const gameRoutes = require('./api/routes/games');
+const newsRoutes = require('./api/routes/news');
+const accessRightRoutes = require('./api/routes/accessright');
+const rankingRoutes = require('./api/routes/ranking');
 
-// Use routes
-app.use('/clubs', clubRoutes);
+// Use routes 
+app.use('/clubs', clubRoutes);  
 app.use('/users', userRoutes);
 app.use('/groups', groupRoutes);
 app.use('/tournaments', tournamentRoutes);
+app.use('/programs', programRoutes);
 app.use('/players', playerRoutes);
-// app.use('/games', gameRoutes);
-// app.use('/ranks', rankingRoutes);
-//app.use('/stats', statRoutes);
+app.use('/role', roleRoutes);
+app.use('/games', gameRoutes);
+app.use('/news', newsRoutes);
+app.use('/access', accessRightRoutes);
+app.use('/rankings', rankingRoutes);
+
+app.get('/admin', checkAccess('rolesmanagement'), (req, res) => {
+    res.send('Welcome to the admin page');
+});
 
 // Error handling for not found routes (404)
 app.use((req, res, next) => {
@@ -79,6 +92,30 @@ app.use((error, req, res, next) => {
         }
     });
 });
+
+const Game = require('./api/models/games');
+const Player = require('./api/models/player');
+const GamePlayer = require('./api/models/gamePlayer');
+const { syncDatabase } = require('./api/models/synchro');
+
+// Add database initialization
+async function initializeDatabase() {
+    try {
+        await sequelize.authenticate();
+        console.log('Database connection established');
+        
+        await syncDatabase();
+        console.log('Database tables created successfully');
+        
+        const PORT = process.env.PORT || 5500;
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error('Database initialization error:', error);
+        process.exit(1);
+    }
+}
 
 // Export the app for use in the server
 module.exports = app;

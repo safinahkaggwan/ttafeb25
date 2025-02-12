@@ -15,6 +15,11 @@ router.post('/signup', UserController.signupuser);
 router.post('/login', UserController.userlogin);
 
 // Delete a user (only authenticated users can delete)
-router.delete('/:userId', checkAuth, UserController.deleteuser);
+// router.delete('/:userId', checkAuth, UserController.deleteuser);
+router.delete('/:userId', UserController.deleteuser);
+
+router.patch('/:userId', UserController.updateuser);
+
+router.get('/:userId', UserController.getuserbyid);
 
 module.exports = router;

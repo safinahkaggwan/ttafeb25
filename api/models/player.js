@@ -1,13 +1,14 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
 const Club = require('./clubs');
-const Group = require('./groups');
+const Grp = require('./groups');
 
 const Player = sequelize.define('Player', {
   pid: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
-    autoIncrement: true,
+    allowNull: false,
   },
   pfname: {
     type: DataTypes.STRING(10),
@@ -31,13 +32,16 @@ const Player = sequelize.define('Player', {
     type: DataTypes.STRING(30),
   },
   gender: {
-    type: DataTypes.TINYINT,  // You can change this to ENUM if needed
+    type: DataTypes.STRING,
     allowNull: false,
+    validate: {
+      isIn: [['male', 'female']], // Validate value
+    },
   },
   dob: {
     type: DataTypes.DATE,
     allowNull: false,
-  }
+  },
 }, {
   timestamps: false,
   tableName: 'players'
@@ -45,7 +49,7 @@ const Player = sequelize.define('Player', {
 
 // Associations
 Player.belongsTo(Club, { foreignKey: 'cid', onDelete: 'CASCADE' });
-Player.belongsTo(Group, { foreignKey: 'gid', onDelete: 'CASCADE' });
+Player.belongsTo(Grp, { foreignKey: 'gid', onDelete: 'CASCADE' });
 
 // Sync the model
 Player.sync({ alter: true })

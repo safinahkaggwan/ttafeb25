@@ -5,9 +5,10 @@ const sequelize = require('../db');
 
 const Tournament = sequelize.define('Tournament', {
   tid: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
-    autoIncrement: true,
+    allowNull: false,
   },
   tname: {
     type: DataTypes.STRING(35),

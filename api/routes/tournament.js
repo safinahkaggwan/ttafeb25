@@ -10,7 +10,7 @@ router.get('/', tournamentController.getalltournaments);
 router.post('/', tournamentController.createtournaments);
 
 // router.get('/:tournamentId', checkAuth, tournamentController.getatournament);
-router.get('/:tournamentpId', tournamentController.getatournament);
+router.get('/:tournamentId', tournamentController.getatournament);
 
 // router.patch('/:tournamentId', checkAuth, tournamentController.updatetournament);
 router.patch('/:tournamentId', tournamentController.updatetournament);

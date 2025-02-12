@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-//const checkAuth = require('../middleware/check-auth'); // Assuming you have authentication middleware
+const checkAuth = require('../middleware/check-auth'); // Assuming you have authentication middleware
 const clubController = require('../controllers/clubs');
 
 // Multer storage configuration
@@ -36,7 +36,7 @@ const upload = multer({
 router.get('/', clubController.getallclubs);
 
 // Add a new club
-router.post('/', upload.single('clubImage'), clubController.createclubs);
+router.post('/', upload.single('logo'), clubController.createclubs);
 
 // Get a single club by ID
 router.get('/:clubId', clubController.getaclub);

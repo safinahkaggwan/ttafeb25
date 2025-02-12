@@ -15,7 +15,7 @@ exports.getallclubs = (req, res, next) => {
                 cemail: club.cemail,
                 onboarddate: club.onboarddate,
                 slogan: club.slogan,
-                clubImage: club.logo, // Assuming you're handling BLOBs correctly
+                logo: club.logo ? `http://localhost:5500/uploads/${club.logo}` : null, // Include full path for images
                 request: {
                     type: 'GET',
                     url: `http://localhost:5500/clubs/${club.cid}` // Ensure proper usage of the ID
@@ -39,7 +39,7 @@ exports.createclubs = (req, res, next) => {
         cemail: req.body.cemail,
         onboarddate: req.body.onboarddate,
         slogan: req.body.slogan,
-        clubImage: req.file.path // Assuming you are storing image paths and not BLOBs
+        logo: req.file.path // Assuming you are storing image paths and not BLOBs
     })
     .then(result => {
         res.status(201).json({

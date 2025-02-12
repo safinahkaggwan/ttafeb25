@@ -100,7 +100,7 @@ exports.updatetournament = async (req, res, next) => {
 // Delete a tournament by ID
 exports.deletetournament = (req, res, next) => {
     const id = req.params.tournamentId;
-    Tournament.destroy({ where: { id: id } })
+    Tournament.destroy({ where: { tid: id } })
     .then(result => {
         if (result) {
             res.status(200).json({ message: 'Tournament deleted' });

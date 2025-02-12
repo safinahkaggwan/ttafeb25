@@ -12,6 +12,8 @@ router.post('/', playerController.create_player);
 // router.get('/:playerId', checkAuth, playerController.getaplayer);
 router.get('/:playerId', playerController.getaplayer);
 
+router.get('/:playerId/tournament-stats', playerController.getPlayerTournamentStats);
+
 // router.patch('/:playerId', checkAuth, playerController.updateplayer);
 router.patch('/:playerId', playerController.updateplayer);
 

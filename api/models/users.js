@@ -1,39 +1,51 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
+const Roles = require('./roles');
+const RoleAccess = require('./roleaccess');
+const AccessRight = require('./accessright');
 
-const User = sequelize.define('User', {
+const User = sequelize.define('Users', {
     id: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
-      allowNull: false,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+        allowNull: false,
     },
     username: {
-      type: DataTypes.STRING,
-      allowNull: false,
+        type: DataTypes.STRING,
+        allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false
-      // unique: true
+    useremail: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        // unique: true, // Ensure unique email
+        validate: {
+            isEmail: true
+        }
     },
     password: {
-        type: DataTypes.STRING, 
+        type: DataTypes.STRING,
         allowNull: false,
-    }
-  }, {
-    timestamps: true,  // Automatically adds createdAt and updatedAt fields
-    tableName: 'user'  // Specify the table name explicitly if necessary
-  });
-  
-  User.sync({ alter: true })
-      .then(() => {
-          console.log('User table has been created or updated.');
-      })
-      .catch(err => {
-          console.error('Error creating/updating User table:', err);
-      });
-  
-  module.exports = User;
+    },
+}, {
+    timestamps: true,
+    tableName: 'users'
+});
 
-// match: /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/},
+// Associate User with Role
+User.belongsTo(Roles, { foreignKey: 'roleId', onDelete: 'CASCADE' });
+
+// Ensure User has access to RoleAccess via Role
+Roles.hasMany(RoleAccess, { foreignKey: 'roleId', onDelete: 'CASCADE' });
+RoleAccess.belongsTo(AccessRight, { foreignKey: 'accid', onDelete: 'CASCADE' });
+
+// Sync the model with the database
+User.sync({ alter: true })
+    .then(() => {
+        console.log('User table has been created or updated.');
+    })
+    .catch(err => {
+        console.error('Error creating/updating User table:', err);
+    });
+
+module.exports = User;
