@@ -1,7 +1,5 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
-const Game = require('./games');
-const Player = require('./player');
 
 const GamePlayer = sequelize.define('GamePlayer', {
     id: {
@@ -11,20 +9,12 @@ const GamePlayer = sequelize.define('GamePlayer', {
     },
     gmid: {
         type: DataTypes.UUID,
-        references: {
-            model: Game,
-            key: 'gmid',
-        },
         allowNull: false,
     },
     pid: {
         type: DataTypes.UUID,
-        references: {
-            model: Player,
-            key: 'pid',
-        },
         allowNull: false,
-    },   
+    },
     gteam: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -39,7 +29,7 @@ const GamePlayer = sequelize.define('GamePlayer', {
     }
 }, {
     timestamps: false,
-    tableName: 'GamePlayer',
+    tableName: 'gameplayer',
     indexes: [
         {
             unique: true,
@@ -48,10 +38,17 @@ const GamePlayer = sequelize.define('GamePlayer', {
     ]
 });
 
-// // Sync the model
-// GamePlayer.sync({ alter: true })
-// .then(() => {
-//     console.log('GamePlayer table has been created or updated.');
-// });
+// Define associations
+GamePlayer.associate = (models) => {
+    GamePlayer.belongsTo(models.Game, {
+        foreignKey: 'gmid',
+        onDelete: 'CASCADE'
+    });
+
+    GamePlayer.belongsTo(models.Player, {
+        foreignKey: 'pid',
+        onDelete: 'CASCADE'
+    });
+};
 
 module.exports = GamePlayer;

@@ -1,23 +1,11 @@
-// const { sequelize } = require('../db');
 const db = require('../db'); 
-const Game = require('../models/games');
-const GamePlayer = require('../models/gamePlayer');
-const Player = require('../models/player');
-const Grp = require('../models/groups');
-const Tournament = require('../models/tournaments');
-// const { Op } = require('sequelize');
+const { Game, GamePlayer, Player, Tournament, Grp } = require('../models');
 
 // Get all games
 exports.getAllGames = async (req, res) => {
     try {
         const games = await Game.findAll({
-            attributes: [
-                'gmid', 
-                'gtype', 
-                'gmname', 
-                'tid', 
-                'gid'
-            ],
+            attributes: ['gmid', 'gtype', 'gmname', 'tid', 'gid'],
             include: [
                 {
                     model: Player,
@@ -63,40 +51,7 @@ exports.getAllGames = async (req, res) => {
     }
 };
 
-// Create game without players
-// exports.createGame = async (req, res) => {
-//     const t = await sequelize.transaction();
-//     try {
-//         const { gtype, gmname, tid, gid } = req.body;
-
-//         // Basic validation
-//         if (!gtype || !gmname || !tid || !gid) {
-//             await t.rollback();
-//             return res.status(400).json({ error: 'All fields are required' });
-//         }
-
-//         if (!['singles', 'doubles'].includes(gtype)) {
-//             await t.rollback();
-//             return res.status(400).json({ error: 'Invalid game type' });
-//         }
-
-//         const game = await Game.create({
-//             gtype, gmname, tid, gid
-//         }, { transaction: t });
-
-//         await t.commit();
-//         res.status(201).json({ 
-//             message: 'Game created successfully',
-//             game 
-//         });
-//     } catch (error) {
-//         await t.rollback();
-//         console.error('Error creating game:', error);
-//         res.status(500).json({ error: 'Failed to create game' });
-//     }
-// };
-
-
+// Create game
 exports.createGame = async (req, res) => {
     let t;
     try {
@@ -104,7 +59,6 @@ exports.createGame = async (req, res) => {
         
         const { gtype, gmname, tid, gid } = req.body;
 
-        // Validation
         if (!gtype || !gmname || !tid || !gid) {
             return res.status(400).json({ error: 'All fields are required' });
         }
@@ -114,10 +68,7 @@ exports.createGame = async (req, res) => {
         }
 
         const game = await Game.create({
-            gtype, 
-            gmname, 
-            tid, 
-            gid
+            gtype, gmname, tid, gid
         }, { transaction: t });
 
         await t.commit();
@@ -134,42 +85,33 @@ exports.createGame = async (req, res) => {
 
 // Add players to game
 exports.addPlayersToGame = async (req, res) => {
-    const t = await db.transaction();
+    let t;
     try {
         const { gmid } = req.params;
 
-        if (!req.body || !req.body.players || !Array.isArray(req.body.players)) {
+        if (!req.body?.players?.length) {
             return res.status(400).json({ 
-                error: 'Invalid request format. Expected players array' 
-            });
-        }
-
-        const { players } = req.body;
-
-         // Check for empty players array
-         if (players.length === 0) {
-            return res.status(400).json({ 
-                error: 'No players provided' 
+                error: 'Invalid request format or no players provided' 
             });
         }
 
         const game = await Game.findByPk(gmid);
         if (!game) {
-            await t.rollback();
             return res.status(404).json({ error: 'Game not found' });
         }
 
         const maxPlayers = game.gtype === 'singles' ? 2 : 4;
         const existingCount = await GamePlayer.count({ where: { gmid } });
 
-        if (existingCount + players.length > maxPlayers) {
-            await t.rollback();
+        if (existingCount + req.body.players.length > maxPlayers) {
             return res.status(400).json({ 
                 error: `Maximum ${maxPlayers} players allowed` 
             });
         }
 
-        const addedPlayers = await Promise.all(players.map(player =>
+        t = await db.transaction();
+
+        const addedPlayers = await Promise.all(req.body.players.map(player =>
             GamePlayer.create({
                 gmid,
                 pid: player.pid,
@@ -184,7 +126,7 @@ exports.addPlayersToGame = async (req, res) => {
             players: addedPlayers
         });
     } catch (error) {
-        await t.rollback();
+        if (t) await t.rollback();
         console.error('Error adding players:', error);
         res.status(500).json({ error: 'Failed to add players' });
     }
@@ -193,13 +135,17 @@ exports.addPlayersToGame = async (req, res) => {
 // Get details of a single game
 exports.getGame = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { gameId } = req.params;
 
         const game = await Game.findOne({
-            where: { gmid: id },
+            where: { gmid: gameId },
             include: [{
                 model: GamePlayer,
-                include: [Player]
+                as: 'GamePlayers',
+                include: [{
+                    model: Player,
+                    attributes: ['pid', 'pfname', 'psname']
+                }]
             }]
         });
 
@@ -209,21 +155,24 @@ exports.getGame = async (req, res) => {
 
         res.status(200).json(game);
     } catch (error) {
-        console.error(error);
+        console.error('Error fetching game:', error);
         res.status(500).json({ error: 'Failed to fetch game details.' });
     }
 };
 
-// Get game configuration
 exports.getGameConfig = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { gameId } = req.params;
 
         const game = await Game.findOne({
-            where: { gmid: id },
+            where: { gmid: gameId },
             include: [{
                 model: GamePlayer,
-                include: [Player]
+                as: 'GamePlayers',
+                include: [{
+                    model: Player,
+                    attributes: ['pid', 'pfname', 'psname']
+                }]
             }]
         });
 
@@ -235,118 +184,133 @@ exports.getGameConfig = async (req, res) => {
             gmid: game.gmid,
             gtype: game.gtype,
             gmname: game.gmname,
-            players: game.GamePlayers.map(gp => ({
+            players: game.GamePlayers?.map(gp => ({
                 pid: gp.Player.pid,
-                pname: gp.Player.pname,
+                name: `${gp.Player.pfname || ''} ${gp.Player.psname || ''}`.trim(),
                 gteam: gp.gteam
-            }))
+            })) || []
         };
 
         res.status(200).json(config);
     } catch (error) {
-        console.error(error);
+        console.error('Error fetching game configuration:', error);
         res.status(500).json({ error: 'Failed to fetch game configuration.' });
     }
 };
 
 // Update scores of players in a game
 exports.updateScores = async (req, res) => {
+    let t;
     try {
-        const { id } = req.params;
+        const { gameId } = req.params;
         const { scores } = req.body;
 
-        const gamePlayers = await GamePlayer.findAll({ where: { gmid: id } });
+        if (!scores || !Array.isArray(scores)) {
+            return res.status(400).json({ 
+                error: 'Invalid scores format. Expected an array of scores.' 
+            });
+        }
 
-        if (!gamePlayers || gamePlayers.length === 0) {
+        t = await db.transaction();
+
+        const gamePlayers = await GamePlayer.findAll({ 
+            where: { gmid: gameId },
+            transaction: t
+        });
+
+        if (!gamePlayers?.length) {
+            await t.rollback();
             return res.status(404).json({ error: 'Game or players not found.' });
         }
 
-        // Update scores for each player
-        for (const score of scores) {
+        await Promise.all(scores.map(async score => {
             const gamePlayer = gamePlayers.find(gp => gp.pid === score.pid);
             if (gamePlayer) {
-                gamePlayer.score = score.score;
-                await gamePlayer.save();
+                await gamePlayer.update({ score: score.score }, { transaction: t });
             }
-        }
+        }));
 
-        res.status(200).json({ message: 'Scores updated successfully.' });
+        await t.commit();
+        res.status(200).json({ 
+            message: 'Scores updated successfully',
+            updatedGameId: gameId
+        });
     } catch (error) {
-        console.error(error);
+        if (t) await t.rollback();
+        console.error('Error updating scores:', error);
         res.status(500).json({ error: 'Failed to update scores.' });
     }
 };
 
 // Delete a game
 exports.deleteGame = async (req, res) => {
+    let t;
     try {
-        const gameId = req.params.id || req.params.gameId;
+        const { gameId } = req.params;
         
-        console.log('Delete game params:', {
-            params: req.params,
-            gameId: gameId
-        });
-
         if (!gameId) {
-            return res.status(400).json({ 
-                error: 'Game ID is required' 
-            });
+            return res.status(400).json({ error: 'Game ID is required' });
         }
+
+        t = await db.transaction();
 
         const game = await Game.findOne({ 
             where: { gmid: gameId },
-            logging: console.log
+            transaction: t
         });
 
         if (!game) {
-            return res.status(404).json({ 
-                error: 'Game not found' 
-            });
+            await t.rollback();
+            return res.status(404).json({ error: 'Game not found' });
         }
 
-        await game.destroy();
+        await game.destroy({ transaction: t });
+        await t.commit();
         
         res.status(200).json({ 
             message: 'Game deleted successfully',
             deletedId: gameId 
         });
-
     } catch (error) {
+        if (t) await t.rollback();
         console.error('Delete game error:', {
             error: error.message,
             params: req.params
         });
-        res.status(500).json({ 
-            error: 'Failed to delete game' 
-        });
+        res.status(500).json({ error: 'Failed to delete game' });
     }
 };
+
 // Get rankings for a game
 exports.getRankings = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { gameId } = req.params;
 
         const gamePlayers = await GamePlayer.findAll({
-            where: { gmid: id },
+            where: { gmid: gameId },
             include: [Player]
         });
 
-        if (!gamePlayers || gamePlayers.length === 0) {
+        if (!gamePlayers?.length) {
             return res.status(404).json({ error: 'No players found for the game.' });
         }
 
-        // Calculate team scores
         const teamScores = {};
         gamePlayers.forEach(gp => {
             if (!teamScores[gp.gteam]) teamScores[gp.gteam] = 0;
             teamScores[gp.gteam] += gp.score;
         });
 
-        const winner = Object.keys(teamScores).reduce((a, b) => teamScores[a] > teamScores[b] ? a : b);
+        const winner = Object.keys(teamScores).reduce((a, b) => 
+            teamScores[a] > teamScores[b] ? a : b
+        );
 
-        res.status(200).json({ rankings: teamScores, winner });
+        res.status(200).json({ 
+            rankings: teamScores, 
+            winner 
+        });
     } catch (error) {
-        console.error(error);
+        console.error('Error getting rankings:', error);
         res.status(500).json({ error: 'Failed to get rankings.' });
     }
 };

@@ -1,58 +1,53 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db');
-const Grp = require('./groups');
-const Player = require('./player');
-const Tournament = require('./tournaments');
-const GamePlayer = require('./gamePlayer');
 
-// Define the Game model
-const Game = sequelize.define(
-  'Game',
-  {
+const Game = sequelize.define('Game', {
     gmid: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      primaryKey: true,
-      allowNull: false,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+        allowNull: false,
     },
     gtype: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        isIn: [['singles', 'doubles']], // Validate value
-      },
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            isIn: [['singles', 'doubles']]
+        },
     },
     gmname: {
-      type: DataTypes.STRING(35),
-      allowNull: false,
+        type: DataTypes.STRING(35),
+        allowNull: false,
+    },
+    tid: {
+        type: DataTypes.UUID,
+        allowNull: false
+    },
+    gid: {
+        type: DataTypes.UUID,
+        allowNull: false
     }
-  },
-  {
+}, {
     timestamps: false,
     tableName: 'games',
-  }
-);
-
-Game.belongsToMany(Player, {
-  through: GamePlayer,
-  foreignKey: 'gmid',
-  otherKey: 'pid'
 });
 
-Player.belongsToMany(Game, {
-  through: GamePlayer,
-  foreignKey: 'pid',
-  otherKey: 'gmid'
-});
+// Define associations
+Game.associate = (models) => {
+    Game.hasMany(models.GamePlayer, {
+        foreignKey: 'gmid',
+        as: 'GamePlayers',
+        onDelete: 'CASCADE'
+    });
 
-// Associations
-Game.belongsTo(Tournament, { foreignKey: 'tid', onDelete: 'CASCADE' });
-Game.belongsTo(Grp, { foreignKey: 'gid', onDelete: 'NO ACTION' });
+    Game.belongsToMany(models.Player, {
+        through: models.GamePlayer,
+        foreignKey: 'gmid',
+        otherKey: 'pid'
+    });
 
-// Sync the model
-Game.sync({ alter: true })
-.then(() => {
-    console.log('Game table has been created or updated.');
-});
+    Game.belongsTo(models.Tournament, { foreignKey: 'tid' });
+    Game.belongsTo(models.Grp, { foreignKey: 'gid' });
+};
 
 module.exports = Game;
