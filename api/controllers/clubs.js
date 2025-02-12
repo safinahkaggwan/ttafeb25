@@ -15,7 +15,7 @@ exports.getallclubs = (req, res, next) => {
                 cemail: club.cemail,
                 onboarddate: club.onboarddate,
                 slogan: club.slogan,
-                logo: club.logo ? `http://localhost:5500/uploads/${club.logo}` : null, // Include full path for images
+                logo: club.logo ? `http://localhost:5500/${club.logo}` : null, // Include full path for images
                 request: {
                     type: 'GET',
                     url: `http://localhost:5500/clubs/${club.cid}` // Ensure proper usage of the ID

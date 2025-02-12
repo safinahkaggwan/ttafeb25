@@ -21,14 +21,14 @@ Content-Type: application/json
 {
   "players": [
     {
-      "pid": "123baaac-2eb3-446b-8744-5dc0e57cf848",
+      "pid": "90e69f89-e025-414d-860b-246bae753576",
       "gteam": "A",
-      "score": 0
+      "score": 5
     },
     {
       "pid": "b98ca10a-c0b6-4537-b421-b838ec35b7ad",
       "gteam": "B",
-      "score": 0
+      "score": 2
     }
   ]
 }
@@ -42,13 +42,13 @@ GET http://localhost:5500/games/1f4d8bc2-05b4-44a7-8be6-935f9420dcbc/config
 Accept: application/json
 
 ### Update game scores
-PATCH http://localhost:5500/games/1f4d8bc2-05b4-44a7-8be6-935f9420dcbc/scores
+PATCH http://localhost:5500/games/98a7fa50-bf7b-401e-8787-f3f4e0c553e4/scores
 Content-Type: application/json
 
 {
   "scores": [
     {
-      "pid": "123baaac-2eb3-446b-8744-5dc0e57cf848",
+      "pid": "90e69f89-e025-414d-860b-246bae753576",
       "score": 10
     },
     {

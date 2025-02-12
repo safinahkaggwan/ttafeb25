@@ -15,7 +15,7 @@ router.get('/:playerId', playerController.getaplayer);
 router.get('/:playerId/tournament-stats', playerController.getPlayerTournamentStats);
 
 // router.patch('/:playerId', checkAuth, playerController.updateplayer);
-router.patch('/:playerId', playerController.updateplayer);
+router.put('/:playerId', playerController.updateplayer);
 
 // router.delete('/:playerId', checkAuth, playerController.deleteplayer);
 router.delete('/:playerId', playerController.deleteplayer);
