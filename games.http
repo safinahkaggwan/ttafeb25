@@ -15,7 +15,7 @@ Content-Type: application/json
 }
 
 ### Add players to a game
-POST http://localhost:5500/games/1f4d8bc2-05b4-44a7-8be6-935f9420dcbc/players
+POST http://localhost:5500/games/19a714ab-2e69-411f-b394-8fecd2599b2c/players
 Content-Type: application/json
 
 {
@@ -34,7 +34,7 @@ Content-Type: application/json
 }
 
 ### Get specific game by ID
-GET http://localhost:5500/games/1f4d8bc2-05b4-44a7-8be6-935f9420dcbc
+GET http://localhost:5500/games/19a714ab-2e69-411f-b394-8fecd2599b2c
 Accept: application/json
 
 ### Get game configuration

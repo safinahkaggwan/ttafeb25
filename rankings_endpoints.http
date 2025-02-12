@@ -1,0 +1,12 @@
+### Get Player Rankings
+GET http://localhost:5500/rankings/players
+Accept: application/json
+
+### Get Club Rankings
+
+GET http://localhost:5500/rankings/clubs
+Accept: application/json
+
+### Get Tournament Statistics
+GET http://localhost:5500/rankings/tournaments
+Accept: application/json
