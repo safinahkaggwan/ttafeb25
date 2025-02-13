@@ -2,6 +2,8 @@ const Club = require('../models/clubs'); // Correct the model path
 
 // Get all clubs
 exports.getallclubs = (req, res, next) => {
+    const baseUrl = process.env.BASE_URL || 'http://localhost:5500'; // Use environment variable or default to localhost
+
     Club.findAll({
         attributes: ['cid', 'cname', 'ccontact', 'cemail', 'onboarddate', 'slogan', 'logo'] // Ensure attributes match the model
     })
@@ -15,10 +17,10 @@ exports.getallclubs = (req, res, next) => {
                 cemail: club.cemail,
                 onboarddate: club.onboarddate,
                 slogan: club.slogan,
-                logo: club.logo ? `http://localhost:5500/${club.logo}` : null, // Include full path for images
+                logo: club.logo ? `${baseUrl}/${club.logo}` : null, // Use base URL for images
                 request: {
                     type: 'GET',
-                    url: `http://localhost:5500/clubs/${club.cid}` // Ensure proper usage of the ID
+                    url: `${baseUrl}/clubs/${club.cid}` // Use base URL for API requests
                 }
             }))
         };
@@ -29,7 +31,6 @@ exports.getallclubs = (req, res, next) => {
         res.status(500).json({ error: err.message });
     });
 };
-
 // Add a new club
 exports.createclubs = (req, res, next) => {
     console.log(req.file);
