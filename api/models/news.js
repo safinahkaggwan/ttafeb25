@@ -35,32 +35,13 @@ const Article = sequelize.define('news', {
     tableName: 'news'
 });
 
-// First try to drop the table and recreate it
-Article.sync({force: true})
+// Sync the table without altering the column with a default value
+Article.sync()
     .then(() => {
-        console.log('News table has been created successfully.');
+        console.log('News table has been created or updated successfully.');
     })
     .catch(async (err) => {
-        console.error('Failed with force sync, trying manual creation:', err);
-        try {
-            // If the table already exists, try to alter it safely
-            await sequelize.query(`
-        IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'news')
-        BEGIN
-          CREATE TABLE news (
-            nid UNIQUEIDENTIFIER DEFAULT NEWID() PRIMARY KEY,
-            author NVARCHAR(35),
-            ndate DATETIME,
-            ntitle NVARCHAR(255) NOT NULL,
-            arti NVARCHAR(MAX) NOT NULL,
-            status BIT CONSTRAINT DF_News_Status DEFAULT 0 NOT NULL
-          )
-        END
-      `);
-            console.log('News table has been created or verified.');
-        } catch (error) {
-            console.error('Error in manual table creation:', error);
-        }
+        console.error('Failed to sync the table:', err);
     });
 
 module.exports = Article;
