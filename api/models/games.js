@@ -50,4 +50,12 @@ Game.associate = (models) => {
     Game.belongsTo(models.Grp, { foreignKey: 'gid' });
 };
 
+Game.sync({ alter: true })
+.then(() => {
+    console.log('Game table has been created or updated.');
+})
+.catch(err => {
+    console.error('Error creating/updating Game table:', err);
+});
+
 module.exports = Game;

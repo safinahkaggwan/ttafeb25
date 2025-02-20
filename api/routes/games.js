@@ -22,4 +22,10 @@ router.patch('/:gameId/scores', gameController.updateScores);
 // Delete a game by ID
 router.delete('/:gameId', gameController.deleteGame);
 
+// team player
+router.get('/:gameId/teams', gameController.getTeamPlayers);
+
+// Update set scores for a game
+router.patch('/:gameId/set-scores', gameController.updateSetScores);
+
 module.exports = router;

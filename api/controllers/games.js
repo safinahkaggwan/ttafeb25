@@ -314,3 +314,139 @@ exports.getRankings = async (req, res) => {
         res.status(500).json({ error: 'Failed to get rankings.' });
     }
 };
+
+exports.getTeamPlayers = async (req, res) => {
+    try {
+        const { gameId } = req.params;
+
+        const game = await Game.findOne({
+            where: { gmid: gameId },
+            include: [{
+                model: GamePlayer,
+                as: 'GamePlayers',  // Add this alias
+                include: [{
+                    model: Player,
+                    attributes: ['pid', 'pfname', 'psname']
+                }]
+            }]
+        });
+
+        if (!game) {
+            return res.status(404).json({ error: 'Game not found.' });
+        }
+
+        // Organize players by team
+        const teams = {
+            A: [],
+            B: []
+        };
+
+        game.GamePlayers.forEach(gamePlayer => {
+            const player = {
+                pid: gamePlayer.Player.pid,
+                name: `${gamePlayer.Player.pfname || ''} ${gamePlayer.Player.psname || ''}`.trim(),
+                score: gamePlayer.score
+            };
+
+            if (gamePlayer.gteam === 'A') {
+                teams.A.push(player);
+            } else if (gamePlayer.gteam === 'B') {
+                teams.B.push(player);
+            }
+        });
+
+        res.status(200).json({
+            gmid: game.gmid,
+            gtype: game.gtype,
+            gmname: game.gmname,
+            teams
+        });
+
+    } catch (error) {
+        console.error('Error fetching team players:', error);
+        res.status(500).json({ error: 'Failed to fetch team players.' });
+    }
+};
+
+exports.updateSetScores = async (req, res) => {
+    let t;
+    try {
+        const { gameId } = req.params;
+        const { teamScores } = req.body;  // Changed from setScores to teamScores
+
+        if (!teamScores || !teamScores.A || !teamScores.B) {
+            return res.status(400).json({ 
+                error: 'Invalid scores format. Expected team scores for both teams A and B.' 
+            });
+        }
+
+        t = await db.transaction();
+
+        const gamePlayers = await GamePlayer.findAll({ 
+            where: { gmid: gameId },
+            transaction: t
+        });
+
+        if (!gamePlayers?.length) {
+            await t.rollback();
+            return res.status(404).json({ error: 'Game or players not found.' });
+        }
+
+        // Update scores for all players in each team
+        await Promise.all(gamePlayers.map(async gamePlayer => {
+            const teamScore = teamScores[gamePlayer.gteam];
+            if (teamScore) {
+                const totalScore = (teamScore.set1 || 0) + (teamScore.set2 || 0) + (teamScore.set3 || 0);
+                await gamePlayer.update({ 
+                    set1Score: teamScore.set1 || 0,
+                    set2Score: teamScore.set2 || 0,
+                    set3Score: teamScore.set3 || 0,
+                    score: totalScore
+                }, { transaction: t });
+            }
+        }));
+
+        await t.commit();
+
+        // Fetch updated game data
+        const updatedGame = await Game.findOne({
+            where: { gmid: gameId },
+            include: [{
+                model: GamePlayer,
+                as: 'GamePlayers',
+                include: [{
+                    model: Player,
+                    attributes: ['pid', 'pfname', 'psname']
+                }]
+            }]
+        });
+
+        const teams = {
+            A: { set1: teamScores.A.set1, set2: teamScores.A.set2, set3: teamScores.A.set3, 
+                 total: teamScores.A.set1 + teamScores.A.set2 + teamScores.A.set3 },
+            B: { set1: teamScores.B.set1, set2: teamScores.B.set2, set3: teamScores.B.set3,
+                 total: teamScores.B.set1 + teamScores.B.set2 + teamScores.B.set3 }
+        };
+
+        res.status(200).json({ 
+            message: 'Set scores updated successfully',
+            updatedGameId: gameId,
+            teams,
+            players: updatedGame.GamePlayers.map(gp => ({
+                pid: gp.Player.pid,
+                name: `${gp.Player.pfname || ''} ${gp.Player.psname || ''}`.trim(),
+                team: gp.gteam,
+                scores: {
+                    set1: gp.set1Score,
+                    set2: gp.set2Score,
+                    set3: gp.set3Score,
+                    total: gp.score
+                }
+            }))
+        });
+    } catch (error) {
+        if (t) await t.rollback();
+        console.error('Error updating set scores:', error);
+        res.status(500).json({ error: 'Failed to update set scores.' });
+    }
+};

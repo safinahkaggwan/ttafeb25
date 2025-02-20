@@ -26,6 +26,26 @@ const GamePlayer = sequelize.define('GamePlayer', {
         type: DataTypes.INTEGER,
         defaultValue: 0,
         allowNull: false,
+    },
+    score: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false,
+    },
+    set1Score: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false,
+    },
+    set2Score: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false,
+    },
+    set3Score: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        allowNull: false,
     }
 }, {
     timestamps: false,

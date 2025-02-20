@@ -4,7 +4,7 @@ const Tournament = require('../models/tournaments');  // Sequelize tournament mo
 // Get all tournaments
 exports.getalltournaments = (req, res, next) => {
     Tournament.findAll({
-        attributes: ['tid', 'tname', 'tlocation', 'tdate'] 
+        attributes: ['tid', 'tname', 'tlocation', 'sdate', 'edate'] 
     }) 
     .then(tournaments => {
         const response = {
@@ -13,10 +13,11 @@ exports.getalltournaments = (req, res, next) => {
                 tid: tournament.tid,
                 tname: tournament.tname,
                 tlocation: tournament.tlocation,
-                tdate: tournament.tdate,
+                sdate: tournament.sdate,
+                edate: tournament.edate,
                 request: {
                     type: 'GET',
-                    url: `http://localhost:5500/tournaments/${tournament.tid}`
+                    url: `https://ttafeb25.onrender.com/tournaments/${tournament.tid}`
                 }
             }))
         };
@@ -33,7 +34,8 @@ exports.createtournaments = (req, res, next) => {
     Tournament.create({
         tname: req.body.tname,
         tlocation: req.body.tlocation,
-        tdate: req.body.tdate,
+        sdate: req.body.sdate,
+        edate: req.body.edate,
     })
     .then(result => {
         res.status(201).json({
@@ -51,7 +53,7 @@ exports.createtournaments = (req, res, next) => {
 exports.getatournament = (req, res, next) => {
     const tid = req.params.tournamentId;
     Tournament.findByPk(tid, {
-        attributes: ['tid', 'tname', 'tlocation', 'tdate'] 
+        attributes: ['tid', 'tname', 'tlocation', 'sdate', 'edate'] 
     })
     .then(tournament => {
         if (tournament) {

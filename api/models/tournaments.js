@@ -18,10 +18,14 @@ const Tournament = sequelize.define('Tournament', {
     type: DataTypes.STRING(50),
     allowNull: false,
   },
-  tdate: {
+  sdate: {
     type: DataTypes.DATE,
     allowNull: false,
   },
+  edate: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  }
 }, {
   timestamps: false,
   tableName: 'tournaments' 
