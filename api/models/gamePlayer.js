@@ -22,16 +22,6 @@ const GamePlayer = sequelize.define('GamePlayer', {
             isIn: [['A', 'B']]
         }
     },
-    score: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
-        allowNull: false,
-    },
-    score: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
-        allowNull: false,
-    },
     set1Score: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
@@ -49,7 +39,7 @@ const GamePlayer = sequelize.define('GamePlayer', {
     }
 }, {
     timestamps: false,
-    tableName: 'gameplayer',
+    tableName: 'GamePlayers',
     indexes: [
         {
             unique: true,

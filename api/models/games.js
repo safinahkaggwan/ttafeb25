@@ -26,7 +26,15 @@ const Game = sequelize.define('Game', {
     gid: {
         type: DataTypes.UUID,
         allowNull: false
-    }
+    },
+    status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'not started',
+        validate: {
+            isIn: [['active', 'completed', 'cancelled', 'not started']]
+        },
+    },
 }, {
     timestamps: false,
     tableName: 'games',
@@ -50,12 +58,26 @@ Game.associate = (models) => {
     Game.belongsTo(models.Grp, { foreignKey: 'gid' });
 };
 
-Game.sync({ alter: true })
-.then(() => {
-    console.log('Game table has been created or updated.');
+Game.sync()
+.then(async () => {
+    try {
+        // Check if the column exists first
+        await sequelize.query(`
+            IF NOT EXISTS (
+                SELECT * FROM INFORMATION_SCHEMA.COLUMNS 
+                WHERE TABLE_NAME = 'games' AND COLUMN_NAME = 'status'
+            )
+            BEGIN
+                ALTER TABLE games ADD status NVARCHAR(255) NOT NULL DEFAULT 'not started'
+            END
+        `);
+        console.log('Game table has been created or updated.');
+    } catch (err) {
+        console.error('Error updating Game table:', err);
+    }
 })
 .catch(err => {
-    console.error('Error creating/updating Game table:', err);
+    console.error('Error creating Game table:', err);
 });
 
 module.exports = Game;

@@ -1,9 +1,8 @@
 const { Sequelize, Op } = require('sequelize');
-const db = require('../db');
-const { Player, Club, Game, Tournament, GamePlayer } = require('../models');
+                const db = require('../db');
+                const { Player, Club, Game, Tournament, GamePlayer } = require('../models');
 
-// Get player rankings
-
+// Fix for Player Rankings
 exports.getPlayerRankings = async (req, res) => {
     try {
         const rankings = await Player.findAll({
@@ -12,7 +11,7 @@ exports.getPlayerRankings = async (req, res) => {
                 'pfname',
                 'psname',
                 [db.fn('COUNT', db.col('Games.gmid')), 'gamesPlayed'],
-                [db.fn('SUM', db.col('Games->GamePlayer.score')), 'totalScore']
+                [db.literal('SUM([Games->GamePlayer].[set1Score] + [Games->GamePlayer].[set2Score] + [Games->GamePlayer].[set3Score])'), 'totalScore']
             ],
             include: [{
                 model: Game,
@@ -31,8 +30,9 @@ exports.getPlayerRankings = async (req, res) => {
         console.error('Error getting player rankings:', error);
         res.status(500).json({ error: 'Failed to get player rankings' });
     }
-};// Get club rankings
+};
 
+// Fix for Club Rankings
 exports.getClubRankings = async (req, res) => {
     try {
         const clubStats = await Club.findAll({
@@ -40,7 +40,7 @@ exports.getClubRankings = async (req, res) => {
                 'cid',
                 'cname',
                 [db.fn('COUNT', db.col('Players.pid')), 'totalPlayers'],
-                [db.fn('SUM', db.col('Players->Games->GamePlayer.score')), 'totalScore']
+                [db.literal('SUM([Players->Games->GamePlayer].[set1Score] + [Players->Games->GamePlayer].[set2Score] + [Players->Games->GamePlayer].[set3Score])'), 'totalScore']
             ],
             include: [{
                 model: Player,
@@ -54,10 +54,8 @@ exports.getClubRankings = async (req, res) => {
                     }
                 }]
             }],
-            group: ['Club.cid', 'Club.cname'],  // Specify the table name
-            order: [
-                [db.literal('totalScore'), 'DESC']  // Changed to use literal for consistent ordering
-            ]
+            group: ['Club.cid', 'Club.cname'],
+            order: [[db.literal('totalScore'), 'DESC']]
         });
 
         res.status(200).json({
@@ -72,42 +70,39 @@ exports.getClubRankings = async (req, res) => {
         });
     }
 };
+                // Get tournament statistics
+                exports.getTournamentStats = async (req, res) => {
+                    try {
+                        const tournamentStats = await Tournament.findAll({
+                            attributes: [
+                                'tid',
+                                'tname',
+                                [db.fn('COUNT', db.col('Games.gmid')), 'totalGames'],
+                                [db.fn('COUNT', db.col('Games->GamePlayers.id')), 'totalPlayers']
+                            ],
+                            include: [{
+                                model: Game,
+                                as: 'Games',
+                                attributes: [],
+                                include: [{
+                                    model: GamePlayer,
+                                    as: 'GamePlayers',
+                                    attributes: []
+                                }]
+                            }],
+                            group: ['Tournament.tid', 'Tournament.tname'],
+                            order: [[db.literal('totalGames'), 'DESC']]
+                        });
 
-// Get tournament statistics
-exports.getTournamentStats = async (req, res) => {
-    try {
-        const tournamentStats = await Tournament.findAll({
-            attributes: [
-                'tid',
-                'tname',
-                [db.fn('COUNT', db.col('Games.gmid')), 'totalGames'],
-                [db.fn('COUNT', db.col('Games->GamePlayers.id')), 'totalPlayers']
-            ],
-            include: [{
-                model: Game,
-                as: 'Games',
-                attributes: [],
-                include: [{
-                    model: GamePlayer,
-                    as: 'GamePlayers',  // Added the alias
-                    attributes: []
-                }]
-            }],
-            group: ['Tournament.tid', 'Tournament.tname'],  // Specified table name
-            order: [
-                [db.literal('totalGames'), 'DESC']  // Changed to use literal
-            ]
-        });
-
-        res.status(200).json({
-            count: tournamentStats.length,
-            tournaments: tournamentStats
-        });
-    } catch (error) {
-        console.error('Error getting tournament stats:', error);
-        res.status(500).json({
-            error: 'Failed to fetch tournament statistics',
-            details: error.message
-        });
-    }
-};
+                        res.status(200).json({
+                            count: tournamentStats.length,
+                            tournaments: tournamentStats
+                        });
+                    } catch (error) {
+                        console.error('Error getting tournament stats:', error);
+                        res.status(500).json({
+                            error: 'Failed to fetch tournament statistics',
+                            details: error.message
+                        });
+                    }
+                };
